@@ -1,0 +1,28 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Ajouter un utilisateur — AnnonceApp{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 0 auto; padding: 2rem;">
+    <h2 style="color: var(--text-highlight); margin-bottom: 1.5rem;">Créer un nouvel employé</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div class="form-group">
+                <label class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.3rem;">{{ field.errors|join:", " }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <div class="d-flex gap-2 mt-3">
+            <button type="submit" class="btn btn-primary">Créer l'utilisateur</button>
+            <a href="{% url 'dashboard' %}" class="btn btn-outline">Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

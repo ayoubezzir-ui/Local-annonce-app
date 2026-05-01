@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Mon Profil — AnnonceApp{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 0 auto; padding: 2rem;">
+    <div class="text-center mb-3">
+        <div style="width: 100px; height: 100px; background: var(--accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 3rem;">
+            👤
+        </div>
+        <h2 style="color: var(--text-highlight);">{{ user.username }}</h2>
+        <span class="badge">{{ user.get_role_display }}</span>
+    </div>
+
+    <div style="border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+        <div class="mb-3">
+            <label style="color: #888; font-size: 0.9rem;">Prénom / Nom</label>
+            <div style="font-size: 1.1rem; color: var(--text-highlight);">{{ user.first_name }} {{ user.last_name|default:"Non renseigné" }}</div>
+        </div>
+        
+        <div class="mb-3">
+            <label style="color: #888; font-size: 0.9rem;">Email</label>
+            <div style="font-size: 1.1rem; color: var(--text-highlight);">{{ user.email|default:"Non renseigné" }}</div>
+        </div>
+
+        <div class="mb-3">
+            <label style="color: #888; font-size: 0.9rem;">Date d'inscription</label>
+            <div style="font-size: 1.1rem; color: var(--text-highlight);">{{ user.date_joined|date:"d F Y" }}</div>
+        </div>
+    </div>
+
+    <div class="mt-3 d-flex gap-2">
+        <a href="{% url 'admin:password_change' %}" class="btn btn-outline" style="width: 100%;">Modifier le mot de passe</a>
+    </div>
+</div>
+{% endblock %}

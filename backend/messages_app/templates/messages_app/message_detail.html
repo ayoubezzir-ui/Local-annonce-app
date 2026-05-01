@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Message — AnnonceApp{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 800px; margin: 0 auto; padding: 2rem;">
+    <div class="mb-3">
+        <a href="{% url 'inbox' %}" style="color: #888;">&larr; Retour à la messagerie</a>
+    </div>
+    
+    <h1 style="color: var(--text-highlight); margin-bottom: 1rem;">{{ message.sujet }}</h1>
+    
+    <div class="card-meta" style="font-size: 0.95rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+        <span><strong>De :</strong> {{ message.expediteur.username }}</span>
+        <span><strong>À :</strong> {{ message.destinataire.username }}</span>
+        <span style="color: #888;">📅 Envoyé le {{ message.date_envoi|date:"d M Y à H:i" }}</span>
+    </div>
+    
+    <div style="font-size: 1.1rem; line-height: 1.8; color: var(--text-highlight); margin-top: 1.5rem; white-space: pre-line;">
+        {{ message.contenu }}
+    </div>
+</div>
+{% endblock %}

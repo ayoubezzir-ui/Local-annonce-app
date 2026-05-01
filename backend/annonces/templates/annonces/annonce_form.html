@@ -1,0 +1,78 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{ action }} une annonce — AnnonceApp{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 700px; margin: 0 auto; padding: 2rem;">
+    <h2 style="color: var(--text-highlight); margin-bottom: 1.5rem;">{{ action }} une annonce</h2>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label class="form-label" for="{{ form.titre.id_for_label }}">Titre</label>
+            {{ form.titre }}
+            {% if form.titre.errors %}
+                <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.3rem;">{{ form.titre.errors|join:", " }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label class="form-label" for="{{ form.departement.id_for_label }}">Département</label>
+                {{ form.departement }}
+                {% if form.departement.errors %}
+                    <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.3rem;">{{ form.departement.errors|join:", " }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="{{ form.priorite.id_for_label }}">Priorité</label>
+                {{ form.priorite }}
+                {% if form.priorite.errors %}
+                    <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.3rem;">{{ form.priorite.errors|join:", " }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="{{ form.contenu.id_for_label }}">Contenu</label>
+            {{ form.contenu }}
+            {% if form.contenu.errors %}
+                <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.3rem;">{{ form.contenu.errors|join:", " }}</div>
+            {% endif %}
+        </div>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label class="form-label" for="{{ form.image.id_for_label }}">Image (Optionnel)</label>
+                {{ form.image }}
+                {% if form.image.errors %}
+                    <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.3rem;">{{ form.image.errors|join:", " }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="{{ form.fichier.id_for_label }}">Fichier joint (Optionnel)</label>
+                {{ form.fichier }}
+                {% if form.fichier.errors %}
+                    <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.3rem;">{{ form.fichier.errors|join:", " }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="d-flex gap-2 mt-3">
+            <button type="submit" class="btn btn-primary">Enregistrer l'annonce</button>
+            <a href="{% url 'annonce_list' %}" class="btn btn-outline">Annuler</a>
+        </div>
+    </form>
+</div>
+<script>
+    // Appliquer automatiquement les classes CSS aux nouveaux champs
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+        if (!el.classList.contains('btn')) {
+            el.classList.add('form-control');
+        }
+    });
+</script>
+{% endblock %}

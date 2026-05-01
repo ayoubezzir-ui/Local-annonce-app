@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AnnonceApp{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <span>📢</span> AnnonceApp
+        </a>
+        
+        <ul class="nav-links">
+            <li><a href="{% url 'annonce_list' %}" class="nav-link">Annonces</a></li>
+            {% if user.is_authenticated %}
+                <li>
+                    <a href="{% url 'inbox' %}" class="nav-link">
+                        Messagerie
+                        {% if unread_count > 0 %}
+                            <span style="background: var(--danger); color: white; border-radius: 50%; padding: 0.1rem 0.4rem; font-size: 0.75rem; vertical-align: top; margin-left: 2px;">{{ unread_count }}</span>
+                        {% endif %}
+                    </a>
+                </li>
+                <li class="user-menu">
+                    {% if user.role == 'chef' %}
+                        <a href="{% url 'user_add' %}" class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; background: #27ae60; border: none;">+ Utilisateur</a>
+                    {% endif %}
+                    <a href="{% url 'profile' %}" class="badge">👤 {{ user.username }} ({{ user.get_role_display }})</a>
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border-color: var(--accent-color);">Dashboard</a>
+                    <a href="{% url 'logout' %}" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">Déconnexion</a>
+                </li>
+            {% else %}
+                <li><a href="{% url 'login' %}" class="btn btn-primary">Se connecter</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <main class="container">
+        {% if messages %}
+            <div class="messages" style="margin-bottom: 1.5rem;">
+                {% for message in messages %}
+                    <div class="card" style="padding: 1rem; border-color: var(--accent-color); background: rgba(102, 252, 241, 0.1);">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; {% now "Y" %} AnnonceApp - Portail d'entreprise sécurisé.</p>
+    </footer>
+    <script>
+        // Auto-hide messages
+        setTimeout(() => {
+            const messages = document.querySelectorAll('.messages .card');
+            messages.forEach(msg => {
+                msg.style.opacity = '0';
+                msg.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => msg.remove(), 500);
+            });
+        }, 4000);
+    </script>
+</body>
+</html>

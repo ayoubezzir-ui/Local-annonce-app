@@ -1,0 +1,47 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Nouveau message — AnnonceApp{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 0 auto; padding: 2rem;">
+    <h2 style="color: var(--text-highlight); margin-bottom: 1.5rem;">Nouveau message</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label class="form-label" for="{{ form.destinataire.id_for_label }}">Destinataire</label>
+            {{ form.destinataire }}
+            {% if form.destinataire.errors %}
+                <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.3rem;">{{ form.destinataire.errors|join:", " }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="{{ form.sujet.id_for_label }}">Sujet</label>
+            {{ form.sujet }}
+            {% if form.sujet.errors %}
+                <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.3rem;">{{ form.sujet.errors|join:", " }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="{{ form.contenu.id_for_label }}">Message</label>
+            {{ form.contenu }}
+            {% if form.contenu.errors %}
+                <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.3rem;">{{ form.contenu.errors|join:", " }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="d-flex gap-2 mt-3">
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+            <a href="{% url 'inbox' %}" class="btn btn-outline">Annuler</a>
+        </div>
+    </form>
+</div>
+<script>
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+        el.classList.add('form-control');
+    });
+</script>
+{% endblock %}

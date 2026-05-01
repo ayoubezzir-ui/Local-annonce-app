@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Boîte de réception — AnnonceApp{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-between align-center mb-3">
+    <h2>Messagerie</h2>
+    <a href="{% url 'compose_message' %}" class="btn btn-primary">+ Nouveau message</a>
+</div>
+
+<div class="grid">
+    <div class="card" style="grid-column: span 1;">
+        <h3 class="card-title mb-2">Messages reçus</h3>
+        {% for message in messages_recus %}
+            <div class="message-item {% if not message.est_lu %}message-unread{% endif %}">
+                <div>
+                    <strong>{{ message.expediteur.username }}</strong>
+                    <div style="font-size: 0.9rem; color: var(--text-main);">{{ message.sujet }}</div>
+                </div>
+                <div class="text-right">
+                    <div style="font-size: 0.8rem; color: #888;">{{ message.date_envoi|date:"d M H:i" }}</div>
+                    <a href="{% url 'message_detail' message.pk %}" style="font-size: 0.85rem;">Lire</a>
+                </div>
+            </div>
+        {% empty %}
+            <p style="color: #888; text-align: center; padding: 1rem;">Boîte de réception vide.</p>
+        {% endfor %}
+    </div>
+
+    <div class="card" style="grid-column: span 1;">
+        <h3 class="card-title mb-2">Messages envoyés</h3>
+        {% for message in messages_envoyes %}
+            <div class="message-item">
+                <div>
+                    <strong>À: {{ message.destinataire.username }}</strong>
+                    <div style="font-size: 0.9rem; color: var(--text-main);">{{ message.sujet }}</div>
+                </div>
+                <div class="text-right">
+                    <div style="font-size: 0.8rem; color: #888;">{{ message.date_envoi|date:"d M H:i" }}</div>
+                    <a href="{% url 'message_detail' message.pk %}" style="font-size: 0.85rem;">Voir</a>
+                </div>
+            </div>
+        {% empty %}
+            <p style="color: #888; text-align: center; padding: 1rem;">Aucun message envoyé.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

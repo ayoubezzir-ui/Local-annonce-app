@@ -1,0 +1,40 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Tableau de bord — AnnonceApp{% endblock %}
+
+{% block content %}
+<div class="mb-3">
+    <h1 style="color: var(--text-highlight);">Bienvenue, {{ user.username }} 👋</h1>
+    <p style="color: #888;">Rôle : <strong style="color: var(--accent-color);">{{ user.get_role_display }}</strong></p>
+</div>
+
+<div class="grid mb-3">
+    <div class="card" style="text-align: center;">
+        <div style="font-size: 3rem; color: var(--accent-color); margin-bottom: 0.5rem;">{{ mes_annonces }}</div>
+        <div style="color: var(--text-highlight); font-weight: 500;">Annonces publiées</div>
+    </div>
+    
+    <div class="card" style="text-align: center;">
+        <div style="font-size: 3rem; color: {% if messages_non_lus > 0 %}var(--danger){% else %}var(--accent-color){% endif %}; margin-bottom: 0.5rem;">{{ messages_non_lus }}</div>
+        <div style="color: var(--text-highlight); font-weight: 500;">Messages non lus</div>
+        <a href="{% url 'inbox' %}" class="btn btn-outline mt-3" style="font-size: 0.85rem;">Voir la boîte de réception</a>
+    </div>
+</div>
+
+<h2 class="mb-2" style="color: var(--text-highlight);">Dernières annonces (Toute l'entreprise)</h2>
+<div class="card">
+    <ul style="list-style: none; padding: 0;">
+        {% for annonce in annonces_recentes %}
+            <li style="padding: 1rem 0; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong style="color: var(--text-highlight);">{{ annonce.titre }}</strong>
+                    <div style="font-size: 0.85rem; color: #888;">Par {{ annonce.auteur.username|default:"Anonyme" }} le {{ annonce.date_creation|date:"d M Y" }}</div>
+                </div>
+                <a href="{% url 'annonce_detail' annonce.pk %}" class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Voir</a>
+            </li>
+        {% empty %}
+            <li style="color: #888; text-align: center;">Aucune annonce récente.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
